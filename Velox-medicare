@@ -1,0 +1,159 @@
+index.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velox Medicare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Velox Medicare</h1>
+        <p>Ask me any health-related questions!</p>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="Type your question here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+        <div class="toggle-container">
+            <label>
+                <input type="checkbox" id="report-toggle" checked>
+                Share my real-time data with healthcare providers?
+            </label>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
+```
+
+css/style.css
+```css
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+}
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+h1 {
+    color: #005f73;
+}
+.chat-box {
+    width: 95%;
+    height: 300px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 10px;
+    text-align: left;
+}
+.input-box {
+    margin-top: 10px;
+    display: flex;
+}
+input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+button {
+    padding: 10px;
+    background: #005f73;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+button:hover {
+    background: #003d4c;
+}
+.toggle-container {
+    margin-top: 20px;
+}
+```
+
+js/script.js
+```js
+document.addEventListener("DOMContentLoaded", loadChatHistory);
+document.getElementById("user-input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") sendMessage();
+});
+
+function sendMessage() {
+    let inputField = document.getElementById("user-input");
+    let message = inputField.value.trim();
+    if (message === "") return;
+
+    let chatBox = document.getElementById("chat-box");
+    addMessage("You", message);
+    inputField.value = "";
+    
+    setTimeout(() => {
+        addMessage("Velox AI", "Typing...");
+        setTimeout(() => {
+            let response = getResponse(message);
+            chatBox.lastElementChild.innerHTML = `<strong>Velox AI:</strong> ${response}`;
+        }, 1000);
+    }, 500);
+}
+
+function addMessage(sender, text) {
+    let chatBox = document.getElementById("chat-box");
+    let messageElement = document.createElement("p");
+    messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    saveChatHistory();
+}
+
+function getResponse(message) {
+    message = message.toLowerCase();
+    const keywords = {
+        "heart rate": "Your current heart rate is 75 BPM.",
+        "blood sugar": "Your latest blood sugar level is 110 mg/dL.",
+        "blood pressure": "Your blood pressure is 131/82 mmHg.",
+        "oxygen level": "Your oxygen saturation level is at 98%.",
+        "stress": "Your stress level is moderate. Try deep breathing exercises.",
+        "medication": "Don't forget to take your prescribed medication on time!",
+        "exercise": "Try a 30-minute brisk walk or light stretching.",
+        "hydration": "Drink at least 8 glasses of water daily.",
+        "sleep": "Due to your student life, please get more sleep, you average 5 hours.",
+        "diabetes": "For diabetes management, monitor your blood sugar regularly.",
+        "sugar levels": "Your blood sugar is stable at 110 mg/dL.",
+        "bp": "Your blood pressure is at a healthy level of 131/82 mmHg.",
+        "pulse": "Your heart rate is currently at 75 BPM.",
+        "hi" : "Hello Aarush, how may I assist you today?",
+        "eye" : "Your eyesight may be weaker at this time due to a lack of sleep.",
+        "acl" : "The ACL is a ligament in the foot, do you feel any pain?",
+        "911" : "Calling your physician and EMTS at this time."
+    };
+    
+    let responses = [];
+    for (let key in keywords) {
+        if (message.includes(key)) {
+            responses.push(keywords[key]);
+        }
+    }
+    
+    return responses.length > 0 ? responses.join("<br>") : "I'm still learning! Please consult a healthcare professional for more details.";
+}
+
+function saveChatHistory() {
+    localStorage.setItem("chatHistory", document.getElementById("chat-box").innerHTML);
+}
+```
