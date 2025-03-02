@@ -1,0 +1,56 @@
+```css
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+}
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+h1 {
+    color: #005f73;
+}
+.chat-box {
+    width: 95%;
+    height: 300px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 10px;
+    text-align: left;
+}
+.input-box {
+    margin-top: 10px;
+    display: flex;
+}
+input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+button {
+    padding: 10px;
+    background: #005f73;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+button:hover {
+    background: #003d4c;
+}
+.toggle-container {
+    margin-top: 20px;
+}
+```
